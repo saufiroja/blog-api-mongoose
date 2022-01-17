@@ -5,6 +5,9 @@ const morgan = require('morgan');
 
 const app = express();
 
+// IMPORT ROUTER
+const authRouter = require('./routers/auth.routers');
+
 // CONNECTION DATABASE
 require('./database/config');
 
@@ -12,6 +15,8 @@ require('./database/config');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
+
+app.use('/api', authRouter);
 
 // HANDLING ERROR
 app.use((err, req, res, next) => {
