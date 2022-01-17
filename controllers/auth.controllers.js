@@ -1,6 +1,7 @@
 const createError = require('http-errors');
-const bcrypt = require('bcrypt');
+
 const { User } = require('../database/models/User.models');
+const { generateAccessToken } = require('../middlewares/token.middlewares');
 
 // SIGNUP
 exports.signup = async (req, res, next) => {
@@ -19,10 +20,13 @@ exports.signup = async (req, res, next) => {
       password,
     });
 
+    const token = generateAccessToken(user);
+
     return res.status(201).json({
       message: 'successfully signup user',
       code: 201,
       user,
+      token,
     });
   } catch (error) {
     next(error);
@@ -43,10 +47,13 @@ exports.login = async (req, res, next) => {
       return next(createError(400, 'invalid password'));
     }
 
+    const token = generateAccessToken(user);
+
     return res.status(200).json({
       message: 'successfully login user',
       code: 200,
       user,
+      token,
     });
   } catch (error) {
     next(error);
