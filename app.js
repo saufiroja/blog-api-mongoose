@@ -2,12 +2,12 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const cookieParser = require('cookie-parser');
 
 const app = express();
 
 // IMPORT ROUTER
 const authRouter = require('./routers/auth.routers');
+const postRouter = require('./routers/post.routers');
 
 // CONNECTION DATABASE
 require('./database/config');
@@ -16,9 +16,10 @@ require('./database/config');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
-app.use(cookieParser());
 
+// ROUTERS
 app.use('/api', authRouter);
+app.use('/api', postRouter);
 
 // HANDLING ERROR
 app.use((err, req, res, next) => {
